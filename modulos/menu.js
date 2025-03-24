@@ -1,7 +1,8 @@
 // Imports
-const { Boletos } = require('./gestion_estadio');
+const { Boletos, GestionEstadio } = require('./gestion_estadio');
 //Instancia clase
 const boletosInstancia = new Boletos;
+const gestionInstancia = new GestionEstadio;
 // Prompt
 const prompt = require('prompt-sync')();
 
@@ -25,9 +26,10 @@ function menu(){
     let opcion = Number(prompt ("Selecciona una opción: "));
     switch (opcion){
         case 1:
-            boletosInstancia.generarBoleto();
+            boletosInstancia.generarBoleto(menu);
             break;
         case 2:
+            gestionInstancia.verificarAcceso(menu);
             break;
         case 3:
             break;

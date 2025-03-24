@@ -79,7 +79,8 @@ class Boletos{
         return codigoBoleto;
     }
 
-    generarAsiento(codigoBoleto){ //Genera un asiento en una grade de forma aleatoria
+    generarAsiento(codigoBoleto){ //Genera un asiento en una grada de forma aleatoria
+        let asientoBoleto;
         switch(codigoBoleto[-1]){
             case 'A': //Rango 12500
                 break;
@@ -94,7 +95,38 @@ class Boletos{
 }
 
 class GestionEstadio{
+    verificarAcceso(menu){
+        console.log('=== Acceso Estadio ===');
+        console.log('\n');
+        let boletoCliente = prompt ('Introduce tu código de boleto: ');
+        if(!this.verificarBoletoAcceso(boletoCliente)){
+            console.log('El boleto introducido no es válido!');
+            prompt ('Pulsa enter para volver a intentarlo...');
+                return this.verificarAcceso();
+        }
+        else{
+            console.log(`
+            Nombre: ${boletoCliente.nombre}
+            DNI: ${boletoCliente.dni}
+            Código: ${boletoCliente.codigo}
+            Asiento: ${boletoCliente.asiento}
 
+            `);
+            prompt ('Pulsa enter para volver...');
+                return menu;
+        }
+    }
+
+    verificarBoletoAcceso(boletoCliente){
+        data.BOLETOS.forEach(boleto => {
+            if(boletoCliente.codigo == boleto.codigo){
+                return true;
+            }
+            else{
+                return false;
+            }
+        });
+    }
 }
 
 // Export functiones
