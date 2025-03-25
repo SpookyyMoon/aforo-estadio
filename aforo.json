@@ -4,18 +4,24 @@
             "codigo": 0,
             "asiento": 0,
             "nombre": "John Doe",
-            "dni": "12345678A"
+            "dni": "12345678A",
+            "entrada": null,
+            "salida": null
         },
         {
             "codigo": 0,
             "asiento": 0,
             "nombre": "Jane Doe",
-            "dni": "12345678A"
+            "dni": "12345678A",
+            "entrada": null,
+            "salida": null
         }
     ],
     "INGRESOS": [
         {
             "codigo": 0,
+            "asiento": 0,
+            "nombre": "Jane Doe",
             "entrada": "16:44",
             "salida": null
         }
@@ -23,6 +29,8 @@
     "SALIDAS": [
         {
             "codigo": 0,
+            "asiento": 0,
+            "nombre": "Jane Doe",
             "entrada": "16:45",
             "salida": "18:05"
         }
