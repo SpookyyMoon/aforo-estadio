@@ -1,38 +1,40 @@
 {
     "BOLETOS": [
         {
-            "codigo": 0,
-            "asiento": 0,
-            "nombre": "John Doe",
-            "dni": "12345678A",
+            "codigo": "0513504B",
+            "asiento": null,
+            "nombre": "Jane Doe",
+            "dni": "12376695G",
             "entrada": null,
             "salida": null
         },
         {
-            "codigo": 1111,
-            "asiento": 0,
-            "nombre": "Jane Doe",
-            "dni": "12345678A",
+            "codigo": "0742455A",
+            "asiento": null,
+            "nombre": "John Doe",
+            "dni": "27982566F",
             "entrada": null,
             "salida": null
         }
     ],
     "INGRESOS": [
         {
-            "codigo": 0,
-            "asiento": 0,
-            "nombre": "Jane Doe",
-            "entrada": "16:44",
+            "codigo": "0274457A",
+            "asiento": 2,
+            "nombre": "Benito Kamelas",
+            "dni": "43916990P",
+            "entrada": "17:44",
             "salida": null
         }
     ],
     "SALIDAS": [
         {
-            "codigo": 0,
-            "asiento": 0,
-            "nombre": "Jane Doe",
-            "entrada": "16:45",
-            "salida": "18:05"
+            "codigo": "0844537C",
+            "asiento": 1,
+            "nombre": "Benita Kamelas",
+            "dni": "30001944P",
+            "entrada": "17:44",
+            "salida": "17:44"
         }
     ]
 }

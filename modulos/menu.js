@@ -33,14 +33,17 @@ function menu(){
             gestionInstancia.verificarAcceso(menu);
             break;
         case 3:
-            gestionInstancia.registrarAcceso(menu);
-            break;
+            gestionInstancia.registrarAcceso();
+            prompt ('Pulsa enter para volver...');
+                return menu();
         case 4:
             gestionInstancia.registrarSalida(menu);
             break;
         case 5:
             gestionInstancia.comprobarAforo(menu);
-                break;
+            console.log('\n');
+            prompt ('Pulsa enter para volver al menú...');
+                return menu();
         case 6:
             console.clear();
             process.exit();
