@@ -39,6 +39,7 @@ function menu(){
             gestionInstancia.registrarSalida(menu);
             break;
         case 5:
+            gestionInstancia.comprobarAforo(menu);
                 break;
         case 6:
             console.clear();

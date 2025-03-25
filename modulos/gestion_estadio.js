@@ -2,7 +2,6 @@
 // Uso de fechas y hora del equipo en JS: https://www.geeksforgeeks.org/how-to-get-current-time-in-javascript/
 
 // Filesystem
-const { timeStamp } = require('console');
 const fs = require('fs');
 // Prompt
 const prompt = require('prompt-sync')();
@@ -32,7 +31,8 @@ class Boletos{
             else{
                 let dni = this.comprobarDNI();
                 let codigo = this.generarCodigoBoleto();
-                console.log(nombre, dni, 'BOLETO-'+codigo);
+                let asiento = null;
+                let nuevoBoleto = new Boletos(codigo, asiento, nombre, dni);
             }
     }
 
@@ -82,20 +82,6 @@ class Boletos{
         codigoBoleto = (codigoBoleto + letraBoleto);
         return codigoBoleto;
     }
-
-    generarAsiento(codigoBoleto){ //Genera un asiento en una grada de forma aleatoria
-        let asientoBoleto;
-        switch(codigoBoleto[-1]){
-            case 'A': //Rango 12500
-                break;
-            case 'B': //Rango 25000
-                break;
-            case 'C': //Rango 37500
-                break;
-            case 'D': //Rango 50000
-                break;
-        }
-    }
 }
 
 class GestionEstadio{
@@ -106,36 +92,43 @@ class GestionEstadio{
         console.log('\n');
         let boletoCliente = prompt ('Introduce tu código de boleto: ');
         if(!this.verificarBoletoAcceso(boletoCliente)){
+            console.clear();
+            console.log('=== Acceso Estadio ===');
+            console.log('\n');
             console.log('El boleto introducido no es válido!');
+            console.log('\n');
             prompt ('Pulsa enter para volver a intentarlo...');
                 return this.verificarAcceso();
         }
         else{
             console.clear();
-            console.log(`
-            === Acceso Estadio ===
-            
-            La entrada es válida, tienes acceso al estadio!
-            Nombre: ${boletoCliente.nombre}
-            DNI: ${boletoCliente.dni}
-            Código: ${boletoCliente.codigo}
-            Asiento: ${boletoCliente.asiento}
-
-            `);
+            console.log('=== Acceso Estadio ===');
+            console.log('\n');
+            console.log('La entrada es válida, tienes acceso al estadio!');
+            console.log('\n');
             prompt ('Pulsa enter para volver...');
-                return menu;
+                return menu();
         }
     }
 
     verificarBoletoAcceso(boletoCliente){
-        data.BOLETOS.forEach(boleto => {
-            if(boletoCliente.codigo == boleto.codigo){ //Recorre la lista de boletos y comprueba si hay coincidencias (Cambiar a búsqueda dicotómica)
-                return true;
-            }
-            else{
-                return false;
-            }
-        });
+        let encontrado = false;
+        while(!encontrado){
+            data.BOLETOS.forEach(boleto => {
+                if(boleto.codigo == boletoCliente){ //Recorre la lista de boletos y comprueba si hay coincidencias (Cambiar a búsqueda dicotómica)
+                    encontrado = true;
+                }
+                else{
+                    encontrado = false;
+                }
+            });
+        }
+        if(!encontrado){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     registrarHora(){ //Guarda la hora del equipo
@@ -148,22 +141,89 @@ class GestionEstadio{
         console.log('=== Registro de Acceso ===');
         console.log('\n');
         let boleto = ('Introduce tu código de boleto para ingresar al estadio: ');
-        if(this.verificarBoletoAcceso){
+        if(this.verificarBoletoAcceso && this.comprobarAforo){
             let ingreso = this.registrarHora; //Recibe la hora de registrarHora()
+            let asiento = this.asignarAsiento; //Asigna un asiento en base a los asientos libres
+            console.log('=== Registro de Acceso ===');
+            console.log('\n');
             console.log(`Acceso al estadio concedido, bienvenido ${boleto.nombre}`);
+            console.log(`Asiento asignado: ${asiento}`);
             console.log(`Hora de entada: ${ingreso}`);
+            console.log('\n');
             prompt ('Pulsa enter para volver...');
-                return menu;
+                return menu();
         }
-        else{
+        else if(!this.verificarBoletoAcceso){
+            console.log('=== Registro de Acceso ===');
+            console.log('\n');
             console.log('El boleto introducido no es válido!');
+            console.log('\n');
             prompt ('Pulsa enter para volver a intentarlo...');
                 return this.registrarAcceso();
         }
+        else if(!this.comprobarAforo){
+            console.log('=== Registro de Acceso ===');
+            console.log('\n');
+            console.log('El aforo está completo, debes esperar a que alguien abandone el estadio!');
+            console.log('\n');
+            prompt ('Pulsa enter para volver al menú...');
+                return menu();
+        }
     }
 
-    comprobarIngresoEstadio(){ //Comprueba si una persona está dentro del estadio
+    asignarAsiento(){ //Recorre los asientos ocupados y asigna el primer hueco vacio
+        let asientoDisponible;
+        for(let i = 0; i < data.INGRESOS.length; i++){
+            if(i != data.INGRESOS[i].asiento){
+                asientoDisponible = i;
+            }
+        }
+        return asientoDisponible;
+    }
 
+    
+    comprobarIngresoEstadio(boletoBuscar){ //Comprueba si una persona está dentro del estadio
+        let encontrado = false;
+        let izquierda = 0;
+        let derecha = ordenarCodigoBoletos.length - 1;
+        let intentos = 0;
+            
+        while(izquierda <= derecha && !encontrado){
+            let division = Math.floor((izquierda + derecha) / 2); //Evitar decimales en el resultado de la division
+            intentos++;
+
+            if (ordenarCodigoBoletos[division].codigo == boletoBuscar){
+                encontrado = true;
+                console.clear();
+            }
+            else if (ordenarCodigoBoletos[division].codigo[0] > boletoBuscar[0]){
+                derecha = division - 1; // Buscar en la mitad izquierda
+            }
+            else {
+                izquierda = division + 1; // Buscar en la mitad derecha
+            }
+        }
+        if(encontrado){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+        function ordenarCodigoBoletos(){ //Ordena los códigos de los boletos
+            let ingresosCopia = JSON.parse(JSON.stringify(data.INGRESOS)); // Copia profunda
+    
+            for(let i = 0; i < ingresosCopia.length; i++){
+                for(let x = 0; x < ingresosCopia.length -1; x++){
+                    if(ingresosCopia[x].codigo < ingresosCopia[x+1].codigo){
+                        let guardado_valor = ingresosCopia[x+1];
+                        ingresosCopia[x+1] = ingresosCopia[x];
+                        ingresosCopia[x] = guardado_valor;
+                    }
+                }
+            }
+            return ingresosCopia;
+        }
     }
 
     registrarSalida(menu){
@@ -171,17 +231,38 @@ class GestionEstadio{
         console.log('=== Registro de Salida ===');
         console.log('\n');
         let boleto = ('Introduce tu código de boleto para ingresar al estadio: ');
-        if(this.comprobarIngresoEstadio){
+        if(this.comprobarIngresoEstadio(boleto)){
             let salida = this.registrarHora; //Recibe la hora de salida
+            console.log('=== Registro de Salida ===');
+            console.log('\n');
             console.log(`Has abandonado el estadio, tu asiento se ha liberado (Asiento: ${boleto.asiento})`);
             console.log(`Hora de salida: ${salida}`);
+            console.log('\n');
             prompt ('Pulsa enter para volver...');
-                return menu;
+                return menu();
         }
         else{
+            console.log('=== Registro de Salida ===');
+            console.log('\n');
             console.log('El boleto introducido no es válido!');
+            console.log('\n');
             prompt ('Pulsa enter para volver a intentarlo...');
                 return this.registrarSalida();
+        }
+    }
+
+    comprobarAforo(menu){
+        console.clear();
+        console.log('=== Comprobar Aforo ===');
+        console.log('\n');
+        data.INGRESOS.forEach(ingreso, contador => {
+            contador++;
+        });
+        if(contador >= 50000){
+            return false;
+        }
+        else{
+            return true;
         }
     }
 }
