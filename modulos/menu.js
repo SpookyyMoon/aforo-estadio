@@ -17,9 +17,10 @@ function menu(){
         1. Comprar Boleto
         2. Verificar acceso
         3. Registrar ingreso
-        4. Ver aforo
+        4. Registrar salida
+        5. Ver aforo
 
-        5. Salir
+        6. Salir
         
     `);
 
@@ -35,8 +36,11 @@ function menu(){
             gestionInstancia.registrarAcceso(menu);
             break;
         case 4:
+            gestionInstancia.registrarSalida(menu);
             break;
         case 5:
+                break;
+        case 6:
             console.clear();
             process.exit();
         default:

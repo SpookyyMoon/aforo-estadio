@@ -99,6 +99,7 @@ class Boletos{
 }
 
 class GestionEstadio{
+
     verificarAcceso(menu){
         console.clear();
         console.log('=== Acceso Estadio ===');
@@ -128,7 +129,7 @@ class GestionEstadio{
 
     verificarBoletoAcceso(boletoCliente){
         data.BOLETOS.forEach(boleto => {
-            if(boletoCliente.codigo == boleto.codigo){
+            if(boletoCliente.codigo == boleto.codigo){ //Recorre la lista de boletos y comprueba si hay coincidencias (Cambiar a búsqueda dicotómica)
                 return true;
             }
             else{
@@ -137,14 +138,18 @@ class GestionEstadio{
         });
     }
 
-    registrarAcceso(menu){
+    registrarHora(){ //Guarda la hora del equipo
         let horario = new Date();
+        return `${horario.getHours}:${horario.getMinutes}`;
+    }
+
+    registrarAcceso(menu){
         console.clear();
         console.log('=== Registro de Acceso ===');
         console.log('\n');
         let boleto = ('Introduce tu código de boleto para ingresar al estadio: ');
         if(this.verificarBoletoAcceso){
-            let ingreso = `${horario.getHours}:${horario.getMinutes}`; // Guarda la hora de acceso al estadio
+            let ingreso = this.registrarHora; //Recibe la hora de registrarHora()
             console.log(`Acceso al estadio concedido, bienvenido ${boleto.nombre}`);
             console.log(`Hora de entada: ${ingreso}`);
             prompt ('Pulsa enter para volver...');
@@ -154,6 +159,29 @@ class GestionEstadio{
             console.log('El boleto introducido no es válido!');
             prompt ('Pulsa enter para volver a intentarlo...');
                 return this.registrarAcceso();
+        }
+    }
+
+    comprobarIngresoEstadio(){ //Comprueba si una persona está dentro del estadio
+
+    }
+
+    registrarSalida(menu){
+        console.clear();
+        console.log('=== Registro de Salida ===');
+        console.log('\n');
+        let boleto = ('Introduce tu código de boleto para ingresar al estadio: ');
+        if(this.comprobarIngresoEstadio){
+            let salida = this.registrarHora; //Recibe la hora de salida
+            console.log(`Has abandonado el estadio, tu asiento se ha liberado (Asiento: ${boleto.asiento})`);
+            console.log(`Hora de salida: ${salida}`);
+            prompt ('Pulsa enter para volver...');
+                return menu;
+        }
+        else{
+            console.log('El boleto introducido no es válido!');
+            prompt ('Pulsa enter para volver a intentarlo...');
+                return this.registrarSalida();
         }
     }
 }
