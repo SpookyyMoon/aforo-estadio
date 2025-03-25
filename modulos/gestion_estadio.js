@@ -1,4 +1,8 @@
+// Bibliografía:
+// Uso de fechas y hora del equipo en JS: https://www.geeksforgeeks.org/how-to-get-current-time-in-javascript/
+
 // Filesystem
+const { timeStamp } = require('console');
 const fs = require('fs');
 // Prompt
 const prompt = require('prompt-sync')();
@@ -96,6 +100,7 @@ class Boletos{
 
 class GestionEstadio{
     verificarAcceso(menu){
+        console.clear();
         console.log('=== Acceso Estadio ===');
         console.log('\n');
         let boletoCliente = prompt ('Introduce tu código de boleto: ');
@@ -105,7 +110,11 @@ class GestionEstadio{
                 return this.verificarAcceso();
         }
         else{
+            console.clear();
             console.log(`
+            === Acceso Estadio ===
+            
+            La entrada es válida, tienes acceso al estadio!
             Nombre: ${boletoCliente.nombre}
             DNI: ${boletoCliente.dni}
             Código: ${boletoCliente.codigo}
@@ -126,6 +135,26 @@ class GestionEstadio{
                 return false;
             }
         });
+    }
+
+    registrarAcceso(menu){
+        let horario = new Date();
+        console.clear();
+        console.log('=== Registro de Acceso ===');
+        console.log('\n');
+        let boleto = ('Introduce tu código de boleto para ingresar al estadio: ');
+        if(this.verificarBoletoAcceso){
+            let ingreso = `${horario.getHours}:${horario.getMinutes}`; // Guarda la hora de acceso al estadio
+            console.log(`Acceso al estadio concedido, bienvenido ${boleto.nombre}`);
+            console.log(`Hora de entada: ${ingreso}`);
+            prompt ('Pulsa enter para volver...');
+                return menu;
+        }
+        else{
+            console.log('El boleto introducido no es válido!');
+            prompt ('Pulsa enter para volver a intentarlo...');
+                return this.registrarAcceso();
+        }
     }
 }
 

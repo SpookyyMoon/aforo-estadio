@@ -24,7 +24,7 @@ function menu(){
     `);
 
     let opcion = Number(prompt ("Selecciona una opción: "));
-    switch (opcion){
+    switch (opcion){ //Paso la función menu() a cada método como variable para poder regresar sin dependencia circular
         case 1:
             boletosInstancia.generarBoleto(menu);
             break;
@@ -32,6 +32,7 @@ function menu(){
             gestionInstancia.verificarAcceso(menu);
             break;
         case 3:
+            gestionInstancia.registrarAcceso(menu);
             break;
         case 4:
             break;
